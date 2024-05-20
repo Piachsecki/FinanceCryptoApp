@@ -1,38 +1,41 @@
 package com.piachsecki.financecryptoapp.rest;
 
+import com.piachsecki.financecryptoapp.domain.EnumCurrency;
+import com.piachsecki.financecryptoapp.domain.ExchangeRate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CurrencyRateService {
-    private final WebClient webClient;
+    @Value(value = "${apikey}")
+    private String apikey;
 
-    @Value("${API_KEY}")
-    private String apiKey;
+    @Value(value = "${api.base-url}")
+    private String baseUrl;
 
-    public Mono<String> getRatesFromApi() {
-        String base = "EUR";
-        String symbols = "HUF, PLN, USD";
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/latest")
-                        .queryParam("base", base)
-                        .queryParam("symbols", symbols)
-                        .build())
-                .headers(httpHeaders -> {
-                    httpHeaders.set("API-KEY", apiKey);
-                }).retrieve().bodyToMono(String.class).flatMap(this::processResponse);
+
+    private final RestTemplate restTemplate;
+
+
+    public ExchangeRate calculateRate(EnumCurrency base, List<EnumCurrency> targets, LocalDate date) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("apikey", apikey);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        final HttpEntity<String> headersEntity = new HttpEntity<>(headers);
+
+        String symbols = String.join("%2C", targets.stream().map(EnumCurrency::name).toArray(String[]::new));
+
+
+        String url = baseUrl + date + "?symbols=" + symbols + "&base=" + base;
+        return restTemplate.exchange(url, HttpMethod.GET, headersEntity, ExchangeRate.class).getBody();
     }
-
-    private Mono<String> processResponse(String response) {
-        // Process the response here
-        System.out.println("Response: " + response);
-        // For example, you can transform it, log it, etc.
-        return Mono.just(response); // Modify this as per your processing logic
-    }
-
 }

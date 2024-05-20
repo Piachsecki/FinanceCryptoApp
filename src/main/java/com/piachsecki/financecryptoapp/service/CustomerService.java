@@ -16,14 +16,11 @@ import java.util.List;
 public class CustomerService implements CustomerDAO {
 
     private CustomerRepository customerRepository;
-    private CurrencyRateService rateService;
 
     @Override
     @Transactional
     public void addCustomer(Customer customer) {
         customerRepository.save(customer);
-        Mono<String> ratesFromApi = rateService.getRatesFromApi();
-        System.out.println(ratesFromApi);
     }
 
     @Override
