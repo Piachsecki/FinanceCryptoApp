@@ -2,6 +2,8 @@ package com.piachsecki.financecryptoapp.rest;
 
 import com.piachsecki.financecryptoapp.domain.EnumCurrency;
 import com.piachsecki.financecryptoapp.domain.ExchangeRate;
+import com.piachsecki.financecryptoapp.domain.ResponseExchangeRate;
+import com.piachsecki.financecryptoapp.domain.mapper.ExchangeRateMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -21,6 +23,8 @@ public class CurrencyRateService {
     @Value(value = "${api.base-url}")
     private String baseUrl;
 
+    private final ExchangeRateMapper exchangeRateMapper;
+
 
     private final RestTemplate restTemplate;
 
@@ -36,6 +40,8 @@ public class CurrencyRateService {
 
 
         String url = baseUrl + date + "?symbols=" + symbols + "&base=" + base;
-        return restTemplate.exchange(url, HttpMethod.GET, headersEntity, ExchangeRate.class).getBody();
+        ResponseExchangeRate response = restTemplate.exchange(url, HttpMethod.GET, headersEntity, ResponseExchangeRate.class).getBody();
+        return exchangeRateMapper.mapExchangeRate(response);
+
     }
 }

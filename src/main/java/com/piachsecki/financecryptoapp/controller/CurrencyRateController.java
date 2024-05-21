@@ -2,6 +2,7 @@ package com.piachsecki.financecryptoapp.controller;
 
 import com.piachsecki.financecryptoapp.domain.EnumCurrency;
 import com.piachsecki.financecryptoapp.domain.ExchangeRate;
+import com.piachsecki.financecryptoapp.domain.ResponseExchangeRate;
 import com.piachsecki.financecryptoapp.rest.CurrencyRateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
