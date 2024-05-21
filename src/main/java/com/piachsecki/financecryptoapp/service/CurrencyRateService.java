@@ -1,4 +1,4 @@
-package com.piachsecki.financecryptoapp.rest;
+package com.piachsecki.financecryptoapp.service;
 
 import com.piachsecki.financecryptoapp.domain.EnumCurrency;
 import com.piachsecki.financecryptoapp.domain.ExchangeRate;
@@ -17,10 +17,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CurrencyRateService {
-    @Value(value = "${apikey}")
+    @Value(value = "${API_KEY_EXCHANGE_RATES}")
     private String apikey;
 
-    @Value(value = "${api.base-url}")
+    @Value(value = "${API_BASE_EXCHANGE_RATES_URL}")
     private String baseUrl;
 
     private final ExchangeRateMapper exchangeRateMapper;

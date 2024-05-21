@@ -43,6 +43,14 @@ public class Customer {
     @JsonManagedReference
     private List<Invoice> invoices;
 
+
+    @ManyToMany
+    @JoinTable(
+            name = "customer_articles",
+            joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "article_id")
+    )
+    private List<Article> favouriteArticles;
+
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
 //    private List<Wallet> wallets;
 

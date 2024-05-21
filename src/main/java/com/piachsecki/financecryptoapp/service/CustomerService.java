@@ -3,11 +3,9 @@ package com.piachsecki.financecryptoapp.service;
 import com.piachsecki.financecryptoapp.dao.CustomerDAO;
 import com.piachsecki.financecryptoapp.domain.Customer;
 import com.piachsecki.financecryptoapp.repository.CustomerRepository;
-import com.piachsecki.financecryptoapp.rest.CurrencyRateService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
